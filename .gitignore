@@ -36,4 +36,14 @@ build/
 
 ### Mac OS ###
 .DS_Store
-/tpch/
+/tpch/binary
+/tpch/binaryBase
+/tpch/csv
+/tpch/customer.tbl
+/tpch/lineitem.tbl
+/tpch/nation.tbl
+/tpch/orders.tbl
+/tpch/part.tbl
+/tpch/partsupp.tbl
+/tpch/region.tbl
+/tpch/supplier.tbl
