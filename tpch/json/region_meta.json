@@ -1,0 +1,8 @@
+{
+  "Columns": [
+    "R_REGIONKEY",
+    "R_NAME",
+    "R_COMMENT"
+  ],
+  "Types": [ LONG, STRING, STRING ]
+}

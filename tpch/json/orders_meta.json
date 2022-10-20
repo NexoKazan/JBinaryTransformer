@@ -1,0 +1,14 @@
+{
+  "Columns": [
+    "O_ORDERKEY",
+    "O_CUSTKEY",
+    "O_ORDERSTATUS",
+    "O_TOTALPRICE",
+    "O_ORDERDATE",
+    "O_ORDERPRIORITY",
+    "O_CLERK",
+    "O_SHIPPRIORITY",
+    "O_COMMENT"
+  ],
+  "Types": [ LONG, LONG, STRING, FLOAT, DATE, STRING, STRING, INTEGER, STRING ]
+}

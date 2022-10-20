@@ -1,0 +1,9 @@
+{
+  "Columns": [
+    "N_NATIONKEY",
+    "N_NAME",
+    "N_REGIONKEY",
+    "N_COMMENT"
+  ],
+  "Types": [ LONG, STRING, LONG, STRING ]
+}
