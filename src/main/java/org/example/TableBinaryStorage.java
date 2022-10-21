@@ -34,7 +34,7 @@ public class TableBinaryStorage implements IDatabaseReader, AutoCloseable {
         else {
             _mode = "rw";
         }
-        var path = Path.of(db,"json", table + "_meta.json");
+        var path = Path.of(db,table + "_meta.json");
 
         BufferedReader br = new BufferedReader(new FileReader(String.valueOf(path)));
         Gson gson = new Gson();
@@ -43,7 +43,7 @@ public class TableBinaryStorage implements IDatabaseReader, AutoCloseable {
 
 //        _file = new RandomAccessFile(Path.of(db,table).toString(), mode);
         if(_mode.equals("rw")) {
-            _fos = new FileOutputStream(Path.of(db,"binary", table).toString(), true);
+            _fos = new FileOutputStream(Path.of(db, table).toString(), true);
         }
     }
 
