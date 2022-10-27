@@ -1,13 +1,28 @@
 package org.example;
 
+import org.apache.commons.lang3.time.FastDateFormat;
+
 import java.io.*;
 import java.nio.file.Path;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.nio.file.Paths;
+import java.util.TimeZone;
 
 public class Main {
+
+    private static final FastDateFormat TIME_FORMAT_DATE;
+    private static final FastDateFormat TIME_FORMAT_TIME;
+    private static final FastDateFormat TIME_FORMAT_TIMESTAMP;
+
+    static {
+        final TimeZone gmt = TimeZone.getTimeZone("GMT");
+        TIME_FORMAT_DATE = FastDateFormat.getInstance("yyyy-MM-dd", gmt);
+        TIME_FORMAT_TIME = FastDateFormat.getInstance("HH:mm:ss", gmt);
+        TIME_FORMAT_TIMESTAMP =
+                FastDateFormat.getInstance("yyyy-MM-dd HH:mm:ss", gmt);
+    }
     public static void main(String[] args) {
         if (args.length < 2) System.exit(-1);
 
@@ -43,9 +58,9 @@ public class Main {
                     case STRING -> row[i] = parts[i];
                     case DATE, TIME, DATETIME -> {
 
-                        SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd");
+
                         try {
-                            Date d = f.parse(parts[i]);
+                            Date d = TIME_FORMAT_DATE.parse(parts[i]);
                             row[i] = d.getTime();
                         } catch (ParseException e) {
                             e.printStackTrace();
