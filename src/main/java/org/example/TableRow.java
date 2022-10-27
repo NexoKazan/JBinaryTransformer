@@ -85,7 +85,7 @@ public class TableRow {
                 bytes = strStruct.writeObject();
             }
             case DATE, TIME, DATETIME ->
-                    bytes = BytesConverter.LongToByteArray((long) data);
+                    bytes = BytesConverter.LongToByteArray(((Date) data).getTime());
 
             default -> {
             }
