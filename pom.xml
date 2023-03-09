@@ -24,6 +24,12 @@
             <artifactId>commons-cli</artifactId>
             <version>1.5.0</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.lz4/lz4-java -->
+        <dependency>
+        <groupId>org.lz4</groupId>
+        <artifactId>lz4-java</artifactId>
+        <version>1.8.0</version>
+    </dependency>
     </dependencies>
     <build>
         <plugins>
