@@ -12,9 +12,10 @@ public class CompressedOutputStream extends FilterOutputStream {
     protected byte[] buf;
     protected int count;
     protected LZ4Factory factory;
+    LZ4Compressor compressor;
 
     public CompressedOutputStream(OutputStream out) {
-        this(out, 1024*1024);
+        this(out, 16*1024*1024);
     }
 
     public CompressedOutputStream(OutputStream out, int size) {
@@ -24,17 +25,23 @@ public class CompressedOutputStream extends FilterOutputStream {
         }
         buf = new byte[size];
         factory = LZ4Factory.fastestInstance();
+        compressor  = factory.highCompressor();
+    }
+
+    private void writeCompressedChunk() throws IOException {
+
+        int maxCompressedLength = compressor.maxCompressedLength(count);
+        byte[] compressed = new byte[maxCompressedLength];
+        int compressedLength = compressor.compress(buf, 0, count, compressed, 0, maxCompressedLength);
+
+        out.write(BytesConverter.IntToByteArray(compressedLength));
+        out.write(compressed, 0, compressedLength);
     }
 
     /** Flush the internal buffer */
     private void flushBuffer() throws IOException {
         if (count > 0) {
-            LZ4Compressor compressor = factory.highCompressor();
-            int maxCompressedLength = compressor.maxCompressedLength(count);
-            byte[] compressed = new byte[maxCompressedLength];
-            int compressedLength = compressor.compress(buf, 0, count, compressed, 0, maxCompressedLength);
-
-            out.write(compressed, 0, compressedLength);
+            writeCompressedChunk();
             count = 0;
         }
     }
@@ -70,18 +77,7 @@ public class CompressedOutputStream extends FilterOutputStream {
      */
     public synchronized void write(byte[] b, int off, int len) throws IOException {
         if (len >= buf.length) {
-            /* If the request length exceeds the size of the output buffer,
-               flush the output buffer and then write the data directly.
-               In this way buffered streams will cascade harmlessly. */
-            flushBuffer();
-
-            LZ4Compressor compressor = factory.highCompressor();
-            int maxCompressedLength = compressor.maxCompressedLength(count);
-            byte[] compressed = new byte[maxCompressedLength];
-            int compressedLength = compressor.compress(buf, 0, count, compressed, 0, maxCompressedLength);
-
-            out.write(compressed, 0, compressedLength);
-            return;
+            throw new IllegalArgumentException("Too long array");
         }
         if (len > buf.length - count) {
             flushBuffer();

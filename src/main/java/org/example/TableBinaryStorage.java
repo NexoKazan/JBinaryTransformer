@@ -18,7 +18,6 @@ public class TableBinaryStorage implements IDatabaseReader, AutoCloseable {
     //private final RandomAccessFile _file;
     private FileInputStream _fis = null;
     MappedByteBuffer _inputBuffer = null;
-    FileChannel _inputChannel = null;
     private OutputStream _fos = null;
 
     public long readedSize;
@@ -83,7 +82,6 @@ public class TableBinaryStorage implements IDatabaseReader, AutoCloseable {
 
     @Override
     public void close() throws Exception {
-        _inputChannel.close();    }
-
-
+        _fos.close();
+    }
 }

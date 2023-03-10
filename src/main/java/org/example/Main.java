@@ -44,7 +44,7 @@ public class Main {
         }
     }
 
-    private static void CreateBinFile(String input, String output, boolean useCompression) throws IOException {
+    private static void CreateBinFile(String input, String output, boolean useCompression) throws Exception {
         Path path = Paths.get(output);
         String tableName = path.getFileName().toString();
         TableBinaryStorage tbsW = new TableBinaryStorage(tableName, path.getParent().toString(), "rw", useCompression);
@@ -81,6 +81,7 @@ public class Main {
             line = reader.readLine();
         }
         reader.close();
+        tbsW.close();
         System.out.println(tableName + "........Done!");
     }
 }
