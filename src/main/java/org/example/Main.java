@@ -30,18 +30,24 @@ public class Main {
         System.out.print(" -> ");
         System.out.println(args[1]);
 
+        boolean useCompression = false;
+
+        if (args.length > 2) {
+            useCompression = args[2].equals("compress");
+        }
+
         try {
-            CreateBinFile(args[0], args[1]);
+            CreateBinFile(args[0], args[1], useCompression);
         } catch (Exception e) {
             System.out.println(e);
             System.exit(-1);
         }
     }
 
-    private static void CreateBinFile(String input, String output) throws IOException {
+    private static void CreateBinFile(String input, String output, boolean useCompression) throws Exception {
         Path path = Paths.get(output);
         String tableName = path.getFileName().toString();
-        TableBinaryStorage tbsW = new TableBinaryStorage(tableName, path.getParent().toString(), "rw");
+        TableBinaryStorage tbsW = new TableBinaryStorage(tableName, path.getParent().toString(), "rw", useCompression);
         BufferedReader reader = new BufferedReader(new FileReader(input));
         String line = reader.readLine();
         System.out.println(tableName + "........Started!");
@@ -75,6 +81,7 @@ public class Main {
             line = reader.readLine();
         }
         reader.close();
+        tbsW.close();
         System.out.println(tableName + "........Done!");
     }
 }

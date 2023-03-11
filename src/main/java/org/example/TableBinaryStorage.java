@@ -18,14 +18,13 @@ public class TableBinaryStorage implements IDatabaseReader, AutoCloseable {
     //private final RandomAccessFile _file;
     private FileInputStream _fis = null;
     MappedByteBuffer _inputBuffer = null;
-    FileChannel _inputChannel = null;
-    private FileOutputStream _fos = null;
+    private OutputStream _fos = null;
 
     public long readedSize;
     private long _channelSize;
     private long METAINT = Integer.MAX_VALUE;
 
-    public TableBinaryStorage(String table, String db, String mode) throws IOException {
+    public TableBinaryStorage(String table, String db, String mode, boolean useCompression) throws IOException {
         _table = table;
         _db    = db;
         if(Objects.equals(mode, "rw") || Objects.equals(mode, "r")) {
@@ -44,6 +43,8 @@ public class TableBinaryStorage implements IDatabaseReader, AutoCloseable {
 //        _file = new RandomAccessFile(Path.of(db,table).toString(), mode);
         if(_mode.equals("rw")) {
             _fos = new FileOutputStream(Path.of(db, table).toString(), true);
+            if (useCompression)
+                _fos = new CompressedOutputStream(_fos);
         }
     }
 
@@ -81,7 +82,6 @@ public class TableBinaryStorage implements IDatabaseReader, AutoCloseable {
 
     @Override
     public void close() throws Exception {
-        _inputChannel.close();    }
-
-
+        _fos.close();
+    }
 }

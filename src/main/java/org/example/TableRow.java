@@ -4,6 +4,7 @@ import org.apache.commons.lang3.ArrayUtils;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.nio.BufferUnderflowException;
 import java.nio.MappedByteBuffer;
 import java.nio.charset.StandardCharsets;
@@ -29,7 +30,7 @@ public class TableRow {
         return _columnTypes;
     }
 
-    public void Serialize(FileOutputStream stream) throws IOException {
+    public void Serialize(OutputStream stream) throws IOException {
         for ( var i = 0; i < Columns().length; i++ ) {
             WriteData(_columns[ i ], _columnTypes[ i ], stream);
         }
@@ -47,7 +48,7 @@ public class TableRow {
         return output;
     }
 
-    private void WriteData(Object data, ColumnType type, FileOutputStream stream) throws IOException {
+    private void WriteData(Object data, ColumnType type, OutputStream stream) throws IOException {
         byte[] bytes = new byte[]{};
         switch (type) {
             case LONG -> bytes = BytesConverter.LongToByteArray((long) data);
